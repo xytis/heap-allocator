@@ -48,20 +48,20 @@ public :
     template<typename U>
     struct rebind {
         typedef Allocator<U, 
-        typename AllocationPolicy::rebind<U>::other,
-        typename ObjectTraits::rebind<U>::other > other;
+        typename AllocationPolicy::template rebind<U>::other,
+        typename ObjectTraits::template rebind<U>::other > other;
     };
 
 public :
     inline explicit Allocator() {}
     inline ~Allocator() {}
-    inline Allocator(Allocator const& rhs):Traits(rhs), Policy(rhs) {}
+    inline Allocator(Allocator const& rhs): Policy(rhs), Traits(rhs) {}
     
     template <typename U>
     inline Allocator(Allocator<U> const&) {}
     
     template <typename U, typename PU, typename TrU>
-    inline Allocator(Allocator<U, PU, TrU> const& rhs):Traits(rhs), Policy(rhs) {}
+    inline Allocator(Allocator<U, PU, TrU> const& rhs): Policy(rhs), Traits(rhs) {}
 };    //    end of class Allocator
 
 //  Determines if memory from another
@@ -78,7 +78,7 @@ inline bool operator==(Allocator<T, P,
 template<typename TA, typename PA, typename TrA,
          typename TB, typename PB, typename TrB>
 inline bool operator==(Allocator<TA, PA, TrA> const& lhs,
-                    B  ABlocaBor<T2, P2, Tr2> const& rhs) {
+                       Allocator<TB, PB, TrB> const& rhs) {
     return operator==(static_cast<PA&>(lhs),
                       static_cast<PB&>(rhs));
 }

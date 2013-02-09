@@ -48,8 +48,7 @@ public :
     //    memory allocation
     inline pointer allocate(size_type cnt,
                             typename std::allocator<void>::const_pointer = 0) {
-        return reinterpret_cast<pointer>(::operator
-                                         new(cnt * sizeof (T)));
+        return reinterpret_cast<pointer>(::operator new(cnt * sizeof (T)));
     }
     inline void deallocate(pointer p, size_type)
     {
@@ -76,6 +75,8 @@ inline bool operator==(StandardAllocPolicy<TA> const&,
     return false;
 }
 
+#include <iostream>
+
 template<typename T, typename Policy = StandardAllocPolicy<T> >
 class TrackingAllocPolicy : public Policy {
 private : 
@@ -85,20 +86,27 @@ public :
     //    convert an TrackingAllocPolicy<T> to TrackingAllocPolicy<U>
     template<typename U>
     struct rebind {
-        typedef TrackingAllocPolicy<U, 
-           typename AllocationPolicy::rebind<U>::other> other;
+        typedef TrackingAllocPolicy<U, typename AllocationPolicy::template rebind<U>::other > other;
     };
 
 public : 
-    inline explicit TrackingAllocPolicy():total_(0), current_(0), peak_(0) {}
-    inline ~TrackingAllocPolicy() {}
+    inline explicit TrackingAllocPolicy():total_(0), current_(0), peak_(0) {
+      std::cout << "Creating new default allocator: " << this << std::endl;
+    }
+    inline ~TrackingAllocPolicy() {
+      std::cout << "Destroying allocator: " << this << std::endl;      
+    }
     inline explicit 
         TrackingAllocPolicy(TrackingAllocPolicy const& rhs):Policy(rhs), 
-        total_(rhs.total_), current_(rhs.current_), peak_(rhs.peak_) {}
+        total_(rhs.total_), current_(rhs.current_), peak_(rhs.peak_) {
+          std::cout << "Copying an allocator: " << this << " from " << &rhs << std::endl;          
+        }
     template <typename U>
     inline explicit 
        TrackingAllocPolicy(TrackingAllocPolicy<U> const& rhs):Policy(rhs), 
-       total_(0), current_(0), peak_(0) {}
+       total_(0), current_(0), peak_(0) {
+         std::cout << "Creating new allocator: " << this << std::endl;         
+      }
 
     //    memory allocation
     typename AllocationPolicy::pointer 
@@ -127,6 +135,8 @@ public :
           CurrentAllocations() { return this->current_; }
     inline typename AllocationPolicy::size_type 
           PeakAllocations() { return this->peak_; }
+    inline typename AllocationPolicy::difference_type
+          Address() { return reinterpret_cast<typename AllocationPolicy::difference_type>(this); }
 
 private : 
     //    total allocations
