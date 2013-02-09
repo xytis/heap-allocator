@@ -1,4 +1,6 @@
-heap-allocator
+Heap Allocator
 ==============
 
-Implementation of heap allocator for std containers
+Implementation of simple heap allocator for std containers.
+
+Based on tutorials.
