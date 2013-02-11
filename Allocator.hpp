@@ -3,13 +3,13 @@
  *
  *       Filename:  Allocator.hpp
  *
- *    Description:  Allocator class composed from two elements: Allocation policy and 
+ *    Description:  Allocator class composed from two elements: Allocation policy and
  *                  Object traits. Policy is responsible for actual allocation, traits
- *                  can return the address of particular object. Specific object 
+ *                  can return the address of particular object. Specific object
  *                  implementations (like overloaded '&' operator) require modified
  *                  Trait class.
- *                  Depending on policy, alocation can be done in diferent flawours. See
- *                  Policy.hpp for specific options.
+ *                  Depending on policy, allocation can be done in different flavours.
+ *                  See Policy.hpp for specific options.
  *
  *        Version:  1.0
  *        Created:  02/09/2013 11:25:57 AM
@@ -26,10 +26,9 @@
  *                     shared implementation.
  *                  o  Implement by using singleton pattern without binding to
  *                     typename T.
- *                  o  Find a way to have two diferent allocators with same type, but
+ *                  o  Find a way to have two different allocators with same type, but
  *                     distinct memory location.
- * 
- *                  
+ *
  * =====================================================================================
  */
 
