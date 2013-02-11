@@ -19,11 +19,24 @@
  *         Author:  Vytis Valentinavičius (), vytis.valentinavicius@gmail.com
  *        Company:  VU FF
  *
+ *          Notes:  1) Note that the container always holds a copy of the allocator
+ *                     object that is passed to the constructor. If you need a single
+ *                     allocator object to manage all storage for a number of containers,
+ *                     you must provide an allocator that maintains a reference to some
+ *                     shared implementation.
+ *                  o  Implement by using singleton pattern without binding to
+ *                     typename T.
+ *                  o  Find a way to have two diferent allocators with same type, but
+ *                     distinct memory location.
+ * 
+ *                  
  * =====================================================================================
  */
 
 #include "./internals/Traits.hpp"
 #include "./internals/Policy.hpp"
+
+
 
 template<typename T,
 typename Policy = StandardAllocPolicy<T>,
