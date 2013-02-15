@@ -32,9 +32,14 @@
  * =====================================================================================
  */
 
+#ifndef __custom_allocator_hpp__
+#define __custom_allocator_hpp__
+
 #include "./internals/Traits.hpp"
 #include "./internals/Policy.hpp"
 
+///Debug policy
+#include "./internals/TrackingPolicy.hpp"
 
 
 template<typename T,
@@ -119,3 +124,5 @@ inline bool operator!=(Allocator<T, P, Tr> const& lhs,
                        OtherAllocator const& rhs) {
     return !operator==(lhs, rhs);
 }
+
+#endif //__custom_allocator_hpp__
